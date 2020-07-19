@@ -17,7 +17,7 @@ class TrackWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Icon(Icons.local_shipping, color: Theme.of(context).primaryColorLight, size: 70,),
-              Text("Order on route", style: TextStyle(fontSize: 30, fontFamily: "Sacramento", fontWeight: FontWeight.bold)),
+              Text("Order on Route", style: TextStyle(fontSize: 30, fontFamily: "Sacramento", fontWeight: FontWeight.bold)),
             ],
           ),
           backgroundColor: Colors.grey,

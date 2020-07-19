@@ -51,7 +51,7 @@ class SideDrawer extends StatelessWidget {
                   SizedBox(
                     width: 10,
                   ),
-                  Text("Profile",
+                  Text("Home",
                       style: TextStyle(
                         fontSize: 18,
                       )),
@@ -72,7 +72,7 @@ class SideDrawer extends StatelessWidget {
                   SizedBox(
                     width: 10,
                   ),
-                  Text("Make Order",
+                  Text("Make order",
                       style: TextStyle(
                         fontSize: 18,
                       )),
@@ -112,7 +112,7 @@ class SideDrawer extends StatelessWidget {
                   SizedBox(
                     width: 10,
                   ),
-                  Text("Orders History",
+                  Text("Orders history",
                       style: TextStyle(
                         fontSize: 18,
                       )),
@@ -135,7 +135,7 @@ class SideDrawer extends StatelessWidget {
                   SizedBox(
                     width: 10,
                   ),
-                  Text("Edit",
+                  Text("Edit account",
                       style: TextStyle(
                         fontSize: 18,
                       )),
