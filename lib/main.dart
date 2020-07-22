@@ -1,5 +1,5 @@
 import 'package:empw/modules/orders.dart';
-import 'package:empw/modules/users.dart';
+import 'package:empw/modules/auth.dart';
 import 'package:empw/screens/make_order_screen.dart';
 import 'package:empw/screens/orders_history_screen.dart';
 import 'package:empw/screens/profile_screen.dart';
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (ctx) => UserProvider(),
+          create: (ctx) => Auth(),
         ),
         ChangeNotifierProvider(
           create: (ctx) => OrderProvider(),
