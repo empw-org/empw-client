@@ -16,9 +16,32 @@ class _LoginFormState extends State<LoginForm> {
     'password': '',
   };
 
+  void _showDialog(String message) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              content: Text(
+                message,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Theme.of(context).primaryColorLight),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text(
+                    'Okay',
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight),
+                  ),
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
+                )
+              ],
+            ));
+  }
+
   void _sumbit() {
     if (!_formKey.currentState.validate()) {
-      //Invalid
       return;
     }
     _formKey.currentState.save();
@@ -27,9 +50,16 @@ class _LoginFormState extends State<LoginForm> {
         .login(_authData['email'], _authData['password'])
         .then((response) {
       if (response.check == true) {
-        print("loged in");
+        print(response.data.ssn);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ProfileScreen(
+                      name: response.data.name,
+                      phone: response.data.phone,
+                    )));
       } else {
-        print("A fucking error");
+        _showDialog(response.message);
       }
     });
   }

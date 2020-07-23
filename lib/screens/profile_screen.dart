@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
   static const routeName = "/profile_screen";
+  final String name;
+  final String phone;
+  ProfileScreen({@required this.name, @required this.phone});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).primaryColorLight,
         title: Text(
           "Profile",
           style: TextStyle(
@@ -16,6 +19,12 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
       drawer: SideDrawer(),
+      body: Column(
+        children: <Widget>[
+          Text(name),
+          Text(phone),
+        ],
+      ),
     );
   }
 }

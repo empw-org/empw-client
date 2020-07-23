@@ -64,9 +64,9 @@ class UserServices with ChangeNotifier {
     print(response.body);
     if (response.statusCode == 200) {
       return ApiResponse<User>(
-          check: true);
+          check: true, data: User.fromJson(json.decode(response.body)));
     }
     return ApiResponse<User>(
-        check: false);
+        check: false, data: null, message: "Email or Password not right!");
   }
 }
