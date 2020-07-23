@@ -1,13 +1,14 @@
 import 'package:empw/modules/orders.dart';
-import 'package:empw/modules/auth.dart';
 import 'package:empw/screens/make_order_screen.dart';
 import 'package:empw/screens/orders_history_screen.dart';
 import 'package:empw/screens/profile_screen.dart';
 import 'package:empw/screens/login_screen.dart';
 import 'package:empw/screens/sign_screen.dart';
+import 'package:empw/screens/verification_screen.dart';
+import 'package:empw/services/user_services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:device_preview/device_preview.dart';
+//import 'package:device_preview/device_preview.dart';
 import 'package:empw/screens/track_shipping_screen.dart';
 
 void main() => runApp(
@@ -22,10 +23,10 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (ctx) => Auth(),
+          create: (ctx) => OrderProvider(),
         ),
         ChangeNotifierProvider(
-          create: (ctx) => OrderProvider(),
+          create: (ctx) => UserServices(),
         ),
       ],
       child: MaterialApp(
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
           SignScreen.routeName: (ctx) => SignScreen(),
           TrackShippingScreen.routeName: (ctx) => TrackShippingScreen(),
         },
-        home: LoginScreen(),
+        home: VerificationScreen(),
       ),
     );
   }

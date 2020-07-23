@@ -1,4 +1,5 @@
-import 'package:empw/modules/auth.dart';
+import 'package:empw/modules/user.dart';
+import 'package:empw/services/user_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:provider/provider.dart';
@@ -13,29 +14,63 @@ class SignScreen extends StatefulWidget {
 
 class _SignScreenState extends State<SignScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
-  final _passwordController = TextEditingController();
-  Map<String, String> _authData = {
-    'name': '',
-    'phone': '',
-    'email': '',
-    'snn': '',
-    'sal': '',
-    'password': '',
-  };
-  void _sumbit() async{
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _ssnController = TextEditingController();
+  TextEditingController _salController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  void _showDialog(String message, bool check) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              content: Text(
+                message,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Theme.of(context).primaryColorLight),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text(
+                    'Okay',
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight),
+                  ),
+                  onPressed: () {
+                    if (check == true) {
+                      Navigator.of(ctx).popAndPushNamed(LoginScreen.routeName);
+                    } else {
+                      Navigator.of(ctx).pop();
+                    }
+                  },
+                )
+              ],
+            ));
+  }
+
+  void _sumbit() async {
+    User newUser = new User(
+        ssn: _ssnController.text,
+        email: _emailController.text,
+        avgSal: _salController.text,
+        password: _passwordController.text,
+        name: _nameController.text,
+        phone: _phoneController.text);
+
+    print(newUser);
+    print("start of sumbit");
     if (!_formKey.currentState.validate()) {
-      //Invalid
+      print("not validated");
       return;
     }
-    _formKey.currentState.save();
-    print(_authData);
-    await Provider.of<Auth>(context, listen: false).singup(
-        _authData['name'],
-        _authData['email'],
-        _authData['phone'],
-        _authData['snn'],
-        _authData['sal'],
-        _authData['password']);
+    //_formKey.currentState.save();
+    print(newUser);
+    Provider.of<UserServices>(context, listen: false)
+        .singup(newUser)
+        .then((response) {
+      _showDialog(response.message, response.check);
+    });
   }
 
   @override
@@ -94,9 +129,9 @@ class _SignScreenState extends State<SignScreen> {
                         return "Please enter username";
                       }
                     },
-                    onSaved: (value) {
-                      _authData['name'] = value;
-                    },
+                    // onSaved: (value) {
+                    // },
+                    controller: _nameController,
                   ),
                   SizedBox(
                     height: 15,
@@ -111,9 +146,10 @@ class _SignScreenState extends State<SignScreen> {
                         return "Please enter Phone numebr";
                       }
                     },
-                    onSaved: (value) {
-                      _authData['phone'] = value;
-                    },
+                    // onSaved: (value) {
+                    //   newUser.phone = value;
+                    // },
+                    controller: _phoneController,
                   ),
                   SizedBox(
                     height: 15,
@@ -129,9 +165,10 @@ class _SignScreenState extends State<SignScreen> {
                         return "Please enter valid Email";
                       }
                     },
-                    onSaved: (value) {
-                      _authData['email'] = value;
-                    },
+                    // onSaved: (value) {
+                    //   newUser.email = value;
+                    // },
+                    controller: _emailController,
                   ),
                   SizedBox(
                     height: 15,
@@ -145,9 +182,10 @@ class _SignScreenState extends State<SignScreen> {
                         return "Please enter valid SNN";
                       }
                     },
-                    onSaved: (value) {
-                      _authData['snn'] = value;
-                    },
+                    // onSaved: (value) {
+                    //   newUser.ssn = value;
+                    // },
+                    controller: _ssnController,
                   ),
                   SizedBox(
                     height: 15,
@@ -162,9 +200,10 @@ class _SignScreenState extends State<SignScreen> {
                         return "Please enter your average salary";
                       }
                     },
-                    onSaved: (value) {
-                      _authData['sal'] = value;
-                    },
+                    // onSaved: (value) {
+                    //   newUser.avgSal = value;
+                    // },
+                    controller: _salController,
                   ),
                   SizedBox(
                     height: 15,
@@ -181,9 +220,10 @@ class _SignScreenState extends State<SignScreen> {
                         return "Please enter valid password";
                       }
                     },
-                    onSaved: (value) {
-                      _authData['password'] = value;
-                    },
+                    // onSaved: (value) {
+                    //   newUser.password = value;
+                    // },
+                    controller: _passwordController,
                   ),
                   SizedBox(
                     height: 15,
@@ -193,11 +233,11 @@ class _SignScreenState extends State<SignScreen> {
                       labelText: "Confirm Password",
                     ),
                     obscureText: true,
-                    /*validator: (value) {
+                    validator: (value) {
                       if (value != _passwordController.text) {
                         return 'Passwords do not match!';
                       }
-                    },*/
+                    },
                   ),
                 ],
               ),

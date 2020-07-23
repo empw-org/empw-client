@@ -1,6 +1,8 @@
 import 'package:empw/screens/profile_screen.dart';
 import 'package:empw/screens/sign_screen.dart';
+import 'package:empw/services/user_services.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -10,10 +12,10 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   Map<String, String> _authData = {
-    'emailPhone': '',
+    'email': '',
     'password': '',
   };
-  final _passwordController = TextEditingController();
+
   void _sumbit() {
     if (!_formKey.currentState.validate()) {
       //Invalid
@@ -21,7 +23,15 @@ class _LoginFormState extends State<LoginForm> {
     }
     _formKey.currentState.save();
 
-    ///Login user
+    Provider.of<UserServices>(context, listen: false)
+        .login(_authData['email'], _authData['password'])
+        .then((response) {
+      if (response.check == true) {
+        print("loged in");
+      } else {
+        print("A fucking error");
+      }
+    });
   }
 
   @override
@@ -34,16 +44,16 @@ class _LoginFormState extends State<LoginForm> {
           children: <Widget>[
             TextFormField(
               decoration: InputDecoration(
-                labelText: "Phone / Email",
+                labelText: "Email",
               ),
               keyboardType: TextInputType.text,
               validator: (value) {
                 if (value.isEmpty) {
-                  return "Please enter Phone/Email";
+                  return "Please enter Email";
                 }
               },
               onSaved: (value) {
-                _authData['emailPhone'] = value;
+                _authData['email'] = value;
               },
             ),
             SizedBox(
@@ -61,9 +71,8 @@ class _LoginFormState extends State<LoginForm> {
                     onPressed: () {},
                   )),
               obscureText: true,
-              controller: _passwordController,
               validator: (value) {
-                if (value.isEmpty || value.length < 9) {
+                if (value.isEmpty || value.length < 8) {
                   return "Please enter valid password";
                 }
               },
@@ -92,8 +101,8 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                 ),
                 onPressed: () {
-                  //_sumbit();
-                  Navigator.pushNamed(context, ProfileScreen.routeName);
+                  _sumbit();
+                  //Navigator.pushNamed(context, ProfileScreen.routeName);
                 },
               ),
             ),
