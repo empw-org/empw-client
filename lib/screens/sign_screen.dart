@@ -1,4 +1,6 @@
-import 'package:empw/modules/user.dart';
+import 'package:empw/modules/user_signup_data.dart';
+import 'package:empw/modules/user_verification_data.dart';
+import 'package:empw/screens/verification_screen.dart';
 import 'package:empw/services/user_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
@@ -21,7 +23,7 @@ class _SignScreenState extends State<SignScreen> {
   TextEditingController _salController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
-  void _showDialog(String message, bool check) {
+  void _showDialog(String message, bool check, UserVerificationData userVerificationData) {
     showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
@@ -39,7 +41,12 @@ class _SignScreenState extends State<SignScreen> {
                   ),
                   onPressed: () {
                     if (check == true) {
-                      Navigator.of(ctx).popAndPushNamed(LoginScreen.routeName);
+                      Navigator.of(ctx)
+                          .popAndPushNamed(VerificationScreen.routeName,
+                              arguments: VerificationScreen(
+                                email: userVerificationData.email,
+                                password: userVerificationData.password,
+                              ));
                     } else {
                       Navigator.of(ctx).pop();
                     }
@@ -50,7 +57,7 @@ class _SignScreenState extends State<SignScreen> {
   }
 
   void _sumbit() async {
-    User newUser = new User(
+    UserSignUpData newUser = new UserSignUpData(
         ssn: _ssnController.text,
         email: _emailController.text,
         avgSal: _salController.text,
@@ -64,12 +71,11 @@ class _SignScreenState extends State<SignScreen> {
       print("not validated");
       return;
     }
-    //_formKey.currentState.save();
     print(newUser);
     Provider.of<UserServices>(context, listen: false)
         .singup(newUser)
         .then((response) {
-      _showDialog(response.message, response.check);
+      _showDialog(response.message, response.check, response.data);
     });
   }
 
@@ -129,8 +135,6 @@ class _SignScreenState extends State<SignScreen> {
                         return "Please enter username";
                       }
                     },
-                    // onSaved: (value) {
-                    // },
                     controller: _nameController,
                   ),
                   SizedBox(
@@ -146,9 +150,6 @@ class _SignScreenState extends State<SignScreen> {
                         return "Please enter Phone numebr";
                       }
                     },
-                    // onSaved: (value) {
-                    //   newUser.phone = value;
-                    // },
                     controller: _phoneController,
                   ),
                   SizedBox(
@@ -165,9 +166,6 @@ class _SignScreenState extends State<SignScreen> {
                         return "Please enter valid Email";
                       }
                     },
-                    // onSaved: (value) {
-                    //   newUser.email = value;
-                    // },
                     controller: _emailController,
                   ),
                   SizedBox(
@@ -182,9 +180,6 @@ class _SignScreenState extends State<SignScreen> {
                         return "Please enter valid SNN";
                       }
                     },
-                    // onSaved: (value) {
-                    //   newUser.ssn = value;
-                    // },
                     controller: _ssnController,
                   ),
                   SizedBox(
@@ -200,9 +195,6 @@ class _SignScreenState extends State<SignScreen> {
                         return "Please enter your average salary";
                       }
                     },
-                    // onSaved: (value) {
-                    //   newUser.avgSal = value;
-                    // },
                     controller: _salController,
                   ),
                   SizedBox(
@@ -220,9 +212,6 @@ class _SignScreenState extends State<SignScreen> {
                         return "Please enter valid password";
                       }
                     },
-                    // onSaved: (value) {
-                    //   newUser.password = value;
-                    // },
                     controller: _passwordController,
                   ),
                   SizedBox(

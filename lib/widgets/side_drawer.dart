@@ -2,13 +2,15 @@ import 'package:empw/screens/login_screen.dart';
 import 'package:empw/screens/make_order_screen.dart';
 import 'package:empw/screens/orders_history_screen.dart';
 import 'package:empw/screens/profile_screen.dart';
+import 'package:empw/services/user_services.dart';
 import 'package:flutter/material.dart';
 import 'package:empw/screens/track_shipping_screen.dart';
+import 'package:provider/provider.dart';
 
 class SideDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final mq = MediaQuery.of(context).size;
+    // final mq = MediaQuery.of(context).size;
     return Drawer(
       child: Padding(
         padding: const EdgeInsets.only(left: 8.0),
@@ -20,9 +22,12 @@ class SideDrawer extends StatelessWidget {
             Row(
               children: <Widget>[
                 Container(
-                  height: 100,
-                  width: 100,
-                  child: Image.asset("assets/images/eye.png", fit: BoxFit.contain,)),
+                    height: 100,
+                    width: 100,
+                    child: Image.asset(
+                      "assets/images/eye.png",
+                      fit: BoxFit.contain,
+                    )),
                 Text("EMPW MENU",
                     style: TextStyle(
                         color: Theme.of(context).primaryColorLight,
@@ -172,6 +177,8 @@ class SideDrawer extends StatelessWidget {
             ),
             FlatButton(
               onPressed: () {
+                Provider.of<UserServices>(context, listen: false)
+                    .removeTokenInSharedPref();
                 Navigator.pushNamed(context, LoginScreen.routeName);
               },
               child: Row(
@@ -188,7 +195,7 @@ class SideDrawer extends StatelessWidget {
                 ],
               ),
             ),
-             SizedBox(
+            SizedBox(
               height: 10,
             ),
           ],

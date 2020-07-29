@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+// import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'dart:math';
 import 'package:intl/intl.dart';
 

@@ -1,11 +1,12 @@
+import 'package:empw/services/user_services.dart';
 import 'package:empw/widgets/side_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
   static const routeName = "/profile_screen";
-  final String name;
-  final String phone;
-  ProfileScreen({@required this.name, @required this.phone});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,11 +20,44 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
       drawer: SideDrawer(),
-      body: Column(
-        children: <Widget>[
-          Text(name),
-          Text(phone),
-        ],
+      body: Container(
+        child: FutureBuilder(
+            future: Provider.of<UserServices>(context, listen: false)
+                .getUserProfile(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              print("snaposhot of profile  ${snapshot.data.data}");
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Container(
+                    color: Colors.white,
+                    child: Center(child: SpinKitFadingCircle(
+                      itemBuilder: (BuildContext context, int index) {
+                        return DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: index.isEven ? Colors.red : Colors.green,
+                          ),
+                        );
+                      },
+                    )));
+              } else if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.data == null) {
+                  return Container(
+                      color: Colors.white,
+                      child: Center(child: SpinKitFadingCircle(
+                        itemBuilder: (BuildContext context, int index) {
+                          return DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: index.isEven ? Colors.red : Colors.green,
+                            ),
+                          );
+                        },
+                      )));
+                } else {
+                  return Column(
+                    children: <Widget>[Text(snapshot.data.data.name)],
+                  );
+                }
+              }
+            }),
       ),
     );
   }

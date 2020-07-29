@@ -1,59 +1,73 @@
+import 'package:empw/modules/user_verification_data.dart';
+import 'package:empw/screens/profile_screen.dart';
 import 'package:empw/services/user_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:provider/provider.dart';
 
-import 'login_screen.dart';
+class VerificationScreen extends StatefulWidget {
+  static const routeName = "/verification_screen";
+  final String email;
+  final String password;
+  VerificationScreen({this.email, this.password});
 
-class VerificationScreen extends StatelessWidget {
-  static const routeName = "verification_screen";
+  @override
+  _VerificationScreenState createState() => _VerificationScreenState();
+}
+
+class _VerificationScreenState extends State<VerificationScreen> {
+  TextEditingController _verificationController = TextEditingController();
+  void _showDialog(String message, bool check) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              content: Text(
+                message,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Theme.of(context).primaryColorLight),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text(
+                    'Okay',
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight),
+                  ),
+                  onPressed: () {
+                    if (check == true) {
+                      
+                        Navigator.of(ctx)
+                            .popAndPushNamed(ProfileScreen.routeName,
+                               
+                                );
+                      
+                    } else {
+                      Navigator.of(ctx).pop();
+                    }
+                  },
+                )
+              ],
+            ));
+  }
+
+  void _sumbit(String email, String password) async {
+    print(_verificationController.text);
+    print(widget.email);
+    UserVerificationData _userVerificationData = new UserVerificationData(
+        code: _verificationController.text, email: email, password: password);
+    Provider.of<UserServices>(context, listen: false)
+        .verifyPhone(_userVerificationData)
+        .then((response) {
+      print(response.data);
+      _showDialog(response.message, response.check);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    //bool _validator = true;
     final mq = MediaQuery.of(context).size;
-    TextEditingController _verificationController = TextEditingController();
-    void _showDialog(String message, bool check) {
-      showDialog(
-          context: context,
-          builder: (ctx) => AlertDialog(
-                content: Text(
-                  message,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Theme.of(context).primaryColorLight),
-                ),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text(
-                      'Okay',
-                      style:
-                          TextStyle(color: Theme.of(context).primaryColorLight),
-                    ),
-                    onPressed: () {
-                      if (check == true) {
-                        Navigator.of(ctx)
-                            .popAndPushNamed(LoginScreen.routeName);
-                      } else {
-                        Navigator.of(ctx).pop();
-                      }
-                    },
-                  )
-                ],
-              ));
-    }
 
-    void _sumbit() async {
-      // if (_verificationController.text.isEmpty ||
-      //     _verificationController.text.length != 6) {
-      //   _validator = false;
-      // }
-      Provider.of<UserServices>(context, listen: false)
-          .verifyPhone(_verificationController.text)
-          .then((response) {
-        print(response.data);
-        _showDialog(response.message, response.check);
-      });
-    }
+    final VerificationScreen args = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
       body: ListView(
@@ -121,12 +135,12 @@ class VerificationScreen extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border.all(color: Theme.of(context).primaryColorLight),
             ),
-            child: TextFormField(
+            child: TextField(
               decoration: InputDecoration(
-                  labelText: "Verification code",
-                  // errorText:
-                  //     _validator ? "" : "Verification code is not right"
-                  ),
+                labelText: "Verification code",
+                // errorText:
+                //     _validator ? "" : "Verification code is not right"
+              ),
               keyboardType: TextInputType.number,
               controller: _verificationController,
             ),
@@ -151,7 +165,7 @@ class VerificationScreen extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                _sumbit();
+                _sumbit(args.email, args.password);
               },
             ),
           ),

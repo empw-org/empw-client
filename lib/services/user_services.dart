@@ -1,8 +1,13 @@
+import 'package:empw/modules/User_Profile_data.dart';
 import 'package:empw/modules/api_response.dart';
-import 'package:empw/modules/user.dart';
+import 'package:empw/modules/user_login_data.dart';
+import 'package:empw/modules/user_signup_data.dart';
+import 'package:empw/modules/user_verification_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserServices with ChangeNotifier {
   static const _api = 'https://api-empw.herokuapp.com/users';
@@ -10,63 +15,116 @@ class UserServices with ChangeNotifier {
     "Content-Type": "application/json",
   };
 
-  Future<ApiResponse<bool>> singup(User newUser) async {
+  Future<bool> isAuth() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey("token")) {
+      return false;
+    }
+    return true;
+  }
+
+  
+  
+
+  Future<ApiResponse<UserVerificationData>> singup(
+      UserSignUpData userSignUpData) async {
     final response = await http.post(
       "$_api/signup",
       headers: headers,
-      body: json.encode(newUser.toJson()),
+      body: json.encode(userSignUpData.toJson()),
     );
     print(response.body);
     if (response.statusCode == 200) {
-      //return "You have successfulyy signed up wait for verification code message";
-      return ApiResponse<bool>(
+      return ApiResponse<UserVerificationData>(
+          data: UserVerificationData(
+              email: userSignUpData.email, password: userSignUpData.password),
           check: true,
           message:
               "You have successfulyy signed up wait for verification code message");
     } else if (response.statusCode == 422) {
-      //return "Please ensure that your Email, Phone number and SSN not signed up before";
-      return ApiResponse<bool>(
+      return ApiResponse<UserVerificationData>(
+          data: null,
           check: false,
           message:
               "Please ensure that your Email, Phone number and SSN not signed up before");
     }
-    return ApiResponse<bool>(check: false, message: "Signed up failed");
+    return ApiResponse<UserVerificationData>(
+        data: null, check: false, message: "Signed up failed");
   }
 
-  Future<ApiResponse<User>> verifyPhone(String code) async {
+  Future<ApiResponse<UserProfileData>> verifyPhone(
+      UserVerificationData userVerificationData) async {
     final response = await http.patch(
       "$_api/verify",
       headers: headers,
-      body: json.encode({
-        "password": "12345678",
-        "phone_number": "+201205046671",
-        "code": code
-      }),
+      body: json.encode(userVerificationData.toJson()),
     );
     print(response.body);
     if (response.statusCode == 200) {
-      return ApiResponse<User>(
-          check: true, message: "Your account successfully verified");
+      final jsonData = json.decode(response.body);
+      _saveTokenInSharedPref(jsonData["token"]);
+      return ApiResponse<UserProfileData>(
+          check: true,
+          message: "Your account successfully verified",
+          data: UserProfileData.fromJson(jsonData));
     }
-    return ApiResponse<User>(
+    return ApiResponse<UserProfileData>(
         check: false, message: "Verification code is not right");
   }
 
-  Future<ApiResponse<User>> login(String email, String password) async {
+  Future<ApiResponse<UserProfileData>> getUserProfile() async {
+    String token = await _getTokenFromSharedPref();
+    final response = await http.get(
+      "https://api-empw.herokuapp.com/user",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
+    print("status : ${response.statusCode}");
+    if (response.statusCode == 200) {
+      print("here i am");
+      final jsonData = json.decode(response.body);
+
+      return ApiResponse<UserProfileData>(
+          check: true, data: UserProfileData.fromJson(jsonData));
+    }
+    return ApiResponse<UserProfileData>(check: false, data: null);
+  }
+
+  Future<ApiResponse<UserProfileData>> login(
+      UserLoginData userLoginData) async {
     final response = await http.post(
       "$_api/login",
       headers: headers,
-      body: json.encode({
-        "password": password,
-        "email": email,
-      }),
+      body: json.encode(userLoginData.toJson()),
     );
     print(response.body);
     if (response.statusCode == 200) {
-      return ApiResponse<User>(
-          check: true, data: User.fromJson(json.decode(response.body)));
+      final jsonData = json.decode(response.body);
+      _saveTokenInSharedPref(jsonData["token"]);
+      return ApiResponse<UserProfileData>(
+          check: true, data: UserProfileData.fromJson(jsonData));
     }
-    return ApiResponse<User>(
+    return ApiResponse<UserProfileData>(
         check: false, data: null, message: "Email or Password not right!");
+  }
+
+  Future<void> removeTokenInSharedPref() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('token');
+    notifyListeners();
+  }
+
+  Future<void> _saveTokenInSharedPref(String returnedToken) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('token', returnedToken);
+    notifyListeners();
+  }
+
+  Future<String> _getTokenFromSharedPref() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    return token;
   }
 }

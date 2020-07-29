@@ -1,3 +1,4 @@
+import 'package:empw/modules/user_login_data.dart';
 import 'package:empw/screens/profile_screen.dart';
 import 'package:empw/screens/sign_screen.dart';
 import 'package:empw/services/user_services.dart';
@@ -11,10 +12,8 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final GlobalKey<FormState> _formKey = GlobalKey();
-  Map<String, String> _authData = {
-    'email': '',
-    'password': '',
-  };
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
 
   void _showDialog(String message) {
     showDialog(
@@ -41,23 +40,19 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _sumbit() {
+    UserLoginData userLoginData = new UserLoginData(
+        email: _emailController.text, password: _passwordController.text);
+
     if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
 
     Provider.of<UserServices>(context, listen: false)
-        .login(_authData['email'], _authData['password'])
+        .login(userLoginData)
         .then((response) {
       if (response.check == true) {
-        print(response.data.ssn);
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ProfileScreen(
-                      name: response.data.name,
-                      phone: response.data.phone,
-                    )));
+        Navigator.of(context).popAndPushNamed(ProfileScreen.routeName);
       } else {
         _showDialog(response.message);
       }
@@ -82,9 +77,7 @@ class _LoginFormState extends State<LoginForm> {
                   return "Please enter Email";
                 }
               },
-              onSaved: (value) {
-                _authData['email'] = value;
-              },
+              controller: _emailController,
             ),
             SizedBox(
               height: 25,
@@ -106,9 +99,7 @@ class _LoginFormState extends State<LoginForm> {
                   return "Please enter valid password";
                 }
               },
-              onSaved: (value) {
-                _authData['password'] = value;
-              },
+              controller: _passwordController,
             ),
             SizedBox(
               height: 25,
