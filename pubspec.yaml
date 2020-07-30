@@ -27,6 +27,7 @@ dependencies:
   percent_indicator: ^2.1.5
   shared_preferences: ^0.5.8
   flutter_spinkit: "^4.1.2"
+  geolocator: ^5.3.2+2
 
 
 

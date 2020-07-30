@@ -1,4 +1,3 @@
-import 'package:empw/modules/orders.dart';
 import 'package:empw/screens/make_order_screen.dart';
 import 'package:empw/screens/orders_history_screen.dart';
 import 'package:empw/screens/profile_screen.dart';
@@ -6,6 +5,7 @@ import 'package:empw/screens/login_screen.dart';
 import 'package:empw/screens/sign_screen.dart';
 import 'package:empw/screens/start_screen.dart';
 import 'package:empw/screens/verification_screen.dart';
+import 'package:empw/services/order_service.dart';
 import 'package:empw/services/user_services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,11 +25,12 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(
-            create: (ctx) => OrderProvider(),
-          ),
-          ChangeNotifierProvider(
             create: (ctx) => UserServices(),
           ),
+           ChangeNotifierProvider(
+            create: (ctx) => OrderServices(),
+          ),
+          
         ],
         child: Consumer<UserServices>(
           builder: (context, userService, _) => MaterialApp(

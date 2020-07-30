@@ -1,7 +1,11 @@
+import 'package:empw/modules/location_data.dart';
+import 'package:empw/modules/make_order_data.dart';
+import 'package:empw/services/order_service.dart';
 import 'package:empw/widgets/payment.dart';
 import 'package:empw/widgets/side_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:provider/provider.dart';
 
 class MakeOrderScreen extends StatefulWidget {
   static const routeName = "/make_order_screen";
@@ -12,6 +16,7 @@ class MakeOrderScreen extends StatefulWidget {
 
 class _MakeOrderScreenState extends State<MakeOrderScreen> {
   int _cnt = 100;
+  String _address = "Location";
   double _containerPercent() {
     if (_cnt >= 410) {
       return 410 / 500;
@@ -20,6 +25,33 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
   }
 
   bool _isSwitched = false;
+
+  void _sumbit() async {
+    Location location = Location();
+
+    await location.getCurrentLocation();
+    await print(location.latitude.toString());
+    MakeOrderData makeOrderData =
+        new MakeOrderData(amount: _cnt.toString(), location: location);
+
+    Provider.of<OrderServices>(context, listen: false)
+        .makeOrder(makeOrderData)
+        .then((response) {
+      if (response.check == true) {
+        print("request added wallahy ${response.data}");
+      } else {
+        print("fucked up");
+      }
+    });
+  }
+
+  void _location() async {
+    Location location = Location();
+
+    await location.getCurrentLocation();
+    await print(location.latitude.toString());
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +75,13 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "Location",
+                  _address,
                   style: TextStyle(fontSize: 20, color: Colors.grey),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _location();
+                  },
                   icon: Icon(
                     Icons.location_on,
                     color: Colors.grey,
@@ -207,7 +241,9 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
                   fontSize: 28,
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                _sumbit();
+              },
             ),
           ),
         ],

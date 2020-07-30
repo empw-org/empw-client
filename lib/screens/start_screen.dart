@@ -8,36 +8,35 @@ import 'login_screen.dart';
 class StartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    
     return Container(
       child: FutureBuilder(
           future: Provider.of<UserServices>(context, listen: false).isAuth(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-            print("snapshot of start screen : ${snapshot.data}");
-            if(snapshot.connectionState == ConnectionState.waiting){
-              return Container (
-                  color: Colors.white,
+            if (snapshot.data == null) {
+              return Container(
+                  color: Theme.of(context).primaryColorLight,
                   child: Center(
-                    child: SpinKitFadingCircle(
-                      itemBuilder: (BuildContext context, int index) {
-                        return DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: index.isEven ? Colors.red : Colors.green,
-                          ),
-                        );
-                      },
-                    )));
-            }else if(snapshot.connectionState == ConnectionState.done){
-            
-             if(snapshot.data == true){
-               return ProfileScreen();
-             }else if(snapshot.data == false){
-               return LoginScreen();
-             }
+                    child: SpinKitWanderingCubes(
+                      color: Colors.white,
+                    ),
+                  ));
+            } else {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Container(
+                    color: Theme.of(context).primaryColorLight,
+                    child: Center(
+                      child: SpinKitWanderingCubes(
+                        color: Colors.white,
+                      ),
+                    ));
+              } else if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.data == true) {
+                  return ProfileScreen();
+                } else if (snapshot.data == false) {
+                  return LoginScreen();
+                }
+              }
             }
-            
-            
-            
           }),
     );
   }

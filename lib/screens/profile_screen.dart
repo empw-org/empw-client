@@ -25,31 +25,18 @@ class ProfileScreen extends StatelessWidget {
             future: Provider.of<UserServices>(context, listen: false)
                 .getUserProfile(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
-              print("snaposhot of profile  ${snapshot.data.data}");
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Container(
-                    color: Colors.white,
-                    child: Center(child: SpinKitFadingCircle(
-                      itemBuilder: (BuildContext context, int index) {
-                        return DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: index.isEven ? Colors.red : Colors.green,
-                          ),
-                        );
-                      },
-                    )));
+                 return Container(
+                      color: Theme.of(context).primaryColorLight,
+                      child: Center(child: SpinKitWanderingCubes(
+                        color: Colors.white,
+                      )));
               } else if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.data == null) {
                   return Container(
-                      color: Colors.white,
-                      child: Center(child: SpinKitFadingCircle(
-                        itemBuilder: (BuildContext context, int index) {
-                          return DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: index.isEven ? Colors.red : Colors.green,
-                            ),
-                          );
-                        },
+                      color: Theme.of(context).primaryColorLight,
+                      child: Center(child: SpinKitWanderingCubes(
+                        color: Colors.white,
                       )));
                 } else {
                   return Column(
