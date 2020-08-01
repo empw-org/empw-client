@@ -27,18 +27,47 @@ class _SignScreenState extends State<SignScreen> {
     showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-              content: Text(
-                message,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Theme.of(context).primaryColorLight),
+          elevation: 40,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(60), bottomLeft: Radius.circular(60))),
+              content: Container(
+                height: 120,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text("Hold On!",
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorDark,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold)),
+                    Text(
+                      message,
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColorLight,
+                          fontSize: 18),
+                    ),
+                  ],
+                ),
               ),
               actions: <Widget>[
-                FlatButton(
-                  child: Text(
-                    'Okay',
-                    style:
-                        TextStyle(color: Theme.of(context).primaryColorLight),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Theme.of(context).primaryColorDark,
+                    gradient: new LinearGradient(colors: [
+                      Theme.of(context).primaryColorLight,
+                      Theme.of(context).primaryColor
+                    ], begin: Alignment.centerLeft, end: Alignment.centerRight),
                   ),
+                  child: FlatButton(
+                    child: Text(
+                      "Ok",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                    ),
                   onPressed: () {
                     if (check == true) {
                       Navigator.of(ctx)
@@ -51,7 +80,7 @@ class _SignScreenState extends State<SignScreen> {
                       Navigator.of(ctx).pop();
                     }
                   },
-                )
+                ))
               ],
             ));
   }

@@ -1,5 +1,7 @@
-import 'package:empw/modules/location_data.dart';
 import 'package:empw/modules/make_order_data.dart';
+import 'package:empw/modules/order_summry_data.dart';
+import 'package:empw/screens/track_shipping_screen.dart';
+import 'package:empw/services/location_services.dart';
 import 'package:empw/services/order_service.dart';
 import 'package:empw/widgets/payment.dart';
 import 'package:empw/widgets/side_drawer.dart';
@@ -26,30 +28,203 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
 
   bool _isSwitched = false;
 
-   void _showDialog() {
+  void _showDialog(String message) {
     showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-              content: Text(
-               "hello",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Theme.of(context).primaryColorLight),
+              elevation: 40,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(60), bottomLeft: Radius.circular(60))),
+              content: Container(
+                height: 120,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text("Hold On!",
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorDark,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold)),
+                    Text(
+                      message,
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColorLight,
+                          fontSize: 18),
+                    ),
+                  ],
+                ),
               ),
               actions: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Theme.of(context).primaryColorDark,
+                    gradient: new LinearGradient(colors: [
+                      Theme.of(context).primaryColorLight,
+                      Theme.of(context).primaryColor
+                    ], begin: Alignment.centerLeft, end: Alignment.centerRight),
+                  ),
+                  child: FlatButton(
+                    child: Text(
+                      "Ok",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
+              ],
+            ));
+  }
+
+  void _showSummeryDialog() {
+    final mq = MediaQuery.of(context).size;
+
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              elevation: 40,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20.0))),
+              content: Container(
+                height: mq.height * 0.45,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    CircleAvatar(
+                      radius: mq.width * 0.15,
+                      backgroundColor: Theme.of(context).primaryColorLight,
+                      child: Image.asset(
+                        'assets/images/eye.png',
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.place,
+                          color: Colors.black,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          "Location:",
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          _address,
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        )
+                      ],
+                    ),
+                    Divider(),
+                    Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.local_drink,
+                          color: Colors.black,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          "Amount:",
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          _cnt.toString(),
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        )
+                      ],
+                    ),
+                    Divider(),
+                    Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.attach_money,
+                          color: Colors.black,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          "Total money",
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          Provider.of<OrderServices>(context, listen: false)
+                              .totalMoney(_cnt.toString()),
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        )
+                      ],
+                    ),
+                    Divider(),
+                    Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.payment,
+                          color: Colors.black,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          "Payment method:",
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          _isSwitched ? "Online" : "Cash",
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(left: 70, right: 70, bottom: 10),
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Theme.of(context).primaryColorDark,
+                    gradient: new LinearGradient(colors: [
+                      Theme.of(context).primaryColorLight,
+                      Theme.of(context).primaryColor
+                    ], begin: Alignment.centerLeft, end: Alignment.centerRight),
+                  ),
+                  child: FlatButton(
+                    child: Text(
+                      "Order now!",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                    ),
+                    onPressed: () {
+                      _sumbit();
+                    },
+                  ),
+                ),
                 FlatButton(
                   child: Text(
-                    'Okay',
+                    'Dismiss',
                     style:
                         TextStyle(color: Theme.of(context).primaryColorLight),
                   ),
                   onPressed: () {
-                   Navigator.of(context).pop();
+                    Navigator.of(context).pop();
                   },
                 )
               ],
             ));
   }
-
 
   void _sumbit() async {
     Location location = Location();
@@ -59,26 +234,25 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
     MakeOrderData makeOrderData =
         new MakeOrderData(amount: _cnt.toString(), location: location);
 
-   await Provider.of<OrderServices>(context, listen: false)
+    await Provider.of<OrderServices>(context, listen: false)
         .makeOrder(makeOrderData)
         .then((response) {
       if (response.check == true) {
-        print("request added wallahy ${response.data}");
-                print("request added wallahy ${response.check}");
-
-        _showDialog();
+        Navigator.of(context).pushNamed(TrackShippingScreen.routeName);
       } else {
-        print("fucked up");
+        _showDialog(response.message);
       }
     });
   }
 
-  void _location() async {
+  void _getAddress() async {
     Location location = Location();
-
     await location.getCurrentLocation();
-    await print(location.latitude.toString());
-
+    await location.getCurrentAdress();
+    await print(location.address);
+    await setState(() {
+      _address = location.address;
+    });
   }
 
   @override
@@ -89,6 +263,56 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
       drawer: SideDrawer(),
       body: ListView(
         children: <Widget>[
+          Container(
+              height: mq.height * 0.25,
+              child: Stack(children: <Widget>[
+                ClipPath(
+                    clipper: WaveClipperTwo(flip: true),
+                    child: Container(
+                      color: Theme.of(context).primaryColorLight,
+                      height: mq.height * 0.25,
+                    )),
+                ClipPath(
+                  clipper: WaveClipperTwo(),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColorDark,
+                      gradient: new LinearGradient(
+                          colors: [
+                            Theme.of(context).primaryColorLight,
+                            Theme.of(context).primaryColor
+                          ],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight),
+                    ),
+                    height: mq.height * 0.25,
+                  ),
+                ),
+                Positioned(
+                  top: 10,
+                  left: 10,
+                  child: Container(
+                    width: mq.width * 0.4,
+                    height: mq.height * 0.2,
+                    child: Image.asset(
+                      'assets/images/eye.png',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 50,
+                  left: 140,
+                  child: Text(
+                    "Order your water now!",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ])),
           Container(
             padding: EdgeInsets.all(10),
             margin: EdgeInsets.only(left: 30, right: 30, top: 30),
@@ -108,7 +332,7 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
                 ),
                 IconButton(
                   onPressed: () {
-                    _location();
+                    _getAddress();
                   },
                   icon: Icon(
                     Icons.location_on,
@@ -263,14 +487,14 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
             ),
             child: FlatButton(
               child: Text(
-                "Order",
+                "Check out",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 28,
                 ),
               ),
               onPressed: () {
-                _sumbit();
+                _showSummeryDialog();
               },
             ),
           ),

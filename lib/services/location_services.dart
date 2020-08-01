@@ -1,30 +1,32 @@
-import 'package:empw/modules/location_data.dart';
 import 'package:geolocator/geolocator.dart';
 
-class LocationServices {
+/// usage
+///  Location location = Location();
+///  await location.getCurrentLocation();
+class Location {
+  double latitude;
+  double longitude;
+  String address;
 
-
-  
-
-  Location getCurrentLocation() {
-    print("indahouse");
-    Location location;
+  Future<void> getCurrentLocation() async {
     try {
-      final Geolocator geolocator = Geolocator()
-        ..forceAndroidLocationManager = true;
-      geolocator
-          .getCurrentPosition(desiredAccuracy: LocationAccuracy.low)
-          .then((position) {
-        if (position != null) {
-          location.latitude = position.latitude;
-          location.longitude = position.longitude;
-          //location.place = "whatever now";
-        }
-      });
+      Position position = await Geolocator()
+          .getCurrentPosition(desiredAccuracy: LocationAccuracy.bestForNavigation);
+      latitude = position.latitude;
+      longitude = position.longitude;
     } catch (e) {
       print(e);
     }
-return location;
-    
-}
+  }
+
+  Future<void> getCurrentAdress() async {
+    try {
+      List<Placemark> p =
+          await Geolocator().placemarkFromCoordinates(latitude, longitude);
+      Placemark place = p[0];
+      address = "${place.locality}, ${place.country}";
+    } catch (e) {
+      print(e);
+    }
+  }
 }

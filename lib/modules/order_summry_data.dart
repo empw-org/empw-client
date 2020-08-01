@@ -15,7 +15,7 @@ class OrderSummeryData {
       {Map<String, dynamic> returnedOrder, String total}) {
     return OrderSummeryData(
         id: returnedOrder["_id"],
-        amount: returnedOrder["amount"],
+        amount: returnedOrder["amount"].toString(),
         state: returnedOrder["state"],
         total: total);
   }

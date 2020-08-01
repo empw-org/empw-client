@@ -22,21 +22,28 @@ class OrderServices with ChangeNotifier {
       body: json.encode(makeOrderData.toJson()),
     );
     print("from order service ${response.body} & ${response.statusCode}");
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       final jsonData = json.decode(response.body);
       return ApiResponse<OrderSummeryData>(
           check: true,
           data: OrderSummeryData.fromJson(
-              returnedOrder: jsonData, total: _totalMoney(jsonData["amount"])));
+              returnedOrder: jsonData, total: totalMoney(jsonData["amount"].toString())));
+    } else if (response.statusCode == 400) {
+      return ApiResponse<OrderSummeryData>(
+          check: false,
+          data: null,
+          message:
+              "You already have your 5 Pending requests, please wait to receive them or delete one.");
     }
     return ApiResponse<OrderSummeryData>(
       check: false,
       data: null,
+      message: "Something went wrong"
     );
   }
 
-  String _totalMoney(String amount) {
-    return (int.parse(amount) * 150).toString();
+  String totalMoney(String amount) {
+    return ((int.parse(amount) * 30) + 200).toString();
   }
 
   Future<String> _getTokenFromSharedPref() async {
