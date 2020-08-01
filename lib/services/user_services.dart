@@ -1,5 +1,6 @@
 import 'package:empw/modules/User_Profile_data.dart';
 import 'package:empw/modules/api_response.dart';
+import 'package:empw/modules/edit_profile_data.dart';
 import 'package:empw/modules/user_login_data.dart';
 import 'package:empw/modules/user_signup_data.dart';
 import 'package:empw/modules/user_verification_data.dart';
@@ -74,6 +75,7 @@ class UserServices with ChangeNotifier {
 
   Future<ApiResponse<UserProfileData>> getUserProfile() async {
     String token = await _getTokenFromSharedPref();
+    await print(token);
     final response = await http.get(
       "https://api-empw.herokuapp.com/user",
       headers: {
@@ -108,6 +110,25 @@ class UserServices with ChangeNotifier {
     }
     return ApiResponse<UserProfileData>(
         check: false, data: null, message: "Email or Password not right!");
+  }
+
+  Future<ApiResponse<bool>> editProfile(EditProfileData editProfileData) async{
+    final response = await http.patch(
+      "$_api/verify",
+      headers: headers,
+      body: json.encode(editProfileData.toJson()),
+    );
+    print(response.body);
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      _saveTokenInSharedPref(jsonData["token"]);
+      return ApiResponse<bool>(
+          check: true,
+          message: "Your account successfully updated",
+          data: true);
+    }
+    return ApiResponse<bool>(
+        check: false, message: "Something went wrong, try again!");
   }
 
   Future<void> removeTokenInSharedPref() async {

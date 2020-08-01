@@ -26,6 +26,31 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
 
   bool _isSwitched = false;
 
+   void _showDialog() {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              content: Text(
+               "hello",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Theme.of(context).primaryColorLight),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text(
+                    'Okay',
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight),
+                  ),
+                  onPressed: () {
+                   Navigator.of(context).pop();
+                  },
+                )
+              ],
+            ));
+  }
+
+
   void _sumbit() async {
     Location location = Location();
 
@@ -34,11 +59,14 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
     MakeOrderData makeOrderData =
         new MakeOrderData(amount: _cnt.toString(), location: location);
 
-    Provider.of<OrderServices>(context, listen: false)
+   await Provider.of<OrderServices>(context, listen: false)
         .makeOrder(makeOrderData)
         .then((response) {
       if (response.check == true) {
         print("request added wallahy ${response.data}");
+                print("request added wallahy ${response.check}");
+
+        _showDialog();
       } else {
         print("fucked up");
       }

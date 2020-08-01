@@ -79,6 +79,9 @@ flutter:
     - family: Sacramento
       fonts:
         - asset: assets/fonts/Sacramento-Regular.ttf
+    - family: Courgette
+      fonts: 
+        - asset: assets/fonts/Courgette-Regular.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #

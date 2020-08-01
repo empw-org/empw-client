@@ -21,7 +21,7 @@ class OrderServices with ChangeNotifier {
       },
       body: json.encode(makeOrderData.toJson()),
     );
-    print(response.body);
+    print("from order service ${response.body} & ${response.statusCode}");
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
       return ApiResponse<OrderSummeryData>(

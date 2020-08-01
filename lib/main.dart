@@ -1,3 +1,4 @@
+import 'package:empw/screens/edit_profile_screen.dart';
 import 'package:empw/screens/make_order_screen.dart';
 import 'package:empw/screens/orders_history_screen.dart';
 import 'package:empw/screens/profile_screen.dart';
@@ -54,8 +55,8 @@ class MyApp extends StatelessWidget {
               SignScreen.routeName: (ctx) => SignScreen(),
               TrackShippingScreen.routeName: (ctx) => TrackShippingScreen(),
               VerificationScreen.routeName: (ctx) => VerificationScreen(),
+              EditProfileScreen.routeName: (ctx) =>  EditProfileScreen(),
             },
-            // home: userService.isAuth? ProfileScreen() : LoginScreen(),
             home: StartScreen(),
           ),
         ));

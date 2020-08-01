@@ -1,29 +1,31 @@
+import 'package:empw/modules/edit_profile_data.dart';
 import 'package:empw/modules/user_signup_data.dart';
 import 'package:empw/modules/user_verification_data.dart';
 import 'package:empw/screens/verification_screen.dart';
 import 'package:empw/services/user_services.dart';
+import 'package:empw/widgets/side_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:provider/provider.dart';
 import 'login_screen.dart';
 
-class SignScreen extends StatefulWidget {
-  static const routeName = '/sign_screen';
+class EditProfileScreen extends StatefulWidget {
+  static const routeName = '/edit_profile_screen';
 
   @override
-  _SignScreenState createState() => _SignScreenState();
+  _EditProfileScreenState createState() => _EditProfileScreenState();
 }
 
-class _SignScreenState extends State<SignScreen> {
+class _EditProfileScreenState extends State<EditProfileScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   TextEditingController _nameController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
-  TextEditingController _ssnController = TextEditingController();
   TextEditingController _salController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
-  void _showDialog(String message, bool check, UserVerificationData userVerificationData) {
+
+
+  void _showDialog(String message, bool check) {
     showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
@@ -41,12 +43,6 @@ class _SignScreenState extends State<SignScreen> {
                   ),
                   onPressed: () {
                     if (check == true) {
-                      Navigator.of(ctx)
-                          .popAndPushNamed(VerificationScreen.routeName,
-                              arguments: VerificationScreen(
-                                email: userVerificationData.email,
-                                password: userVerificationData.password,
-                              ));
                     } else {
                       Navigator.of(ctx).pop();
                     }
@@ -57,25 +53,24 @@ class _SignScreenState extends State<SignScreen> {
   }
 
   void _sumbit() async {
-    UserSignUpData newUser = new UserSignUpData(
-        ssn: _ssnController.text,
-        email: _emailController.text,
-        avgSal: _salController.text,
-        password: _passwordController.text,
-        name: _nameController.text,
-        phone: _phoneController.text);
+    EditProfileData updatedUser = new EditProfileData(
+      email: _emailController.text,
+      avgSal: _salController.text,
+      password: _passwordController.text,
+      name: _nameController.text,
+    );
 
-    print(newUser);
+    print(updatedUser);
     print("start of sumbit");
     if (!_formKey.currentState.validate()) {
       print("not validated");
       return;
     }
-    print(newUser);
+    print(updatedUser);
     Provider.of<UserServices>(context, listen: false)
-        .singup(newUser)
+        .editProfile(updatedUser)
         .then((response) {
-      _showDialog(response.message, response.check, response.data);
+      _showDialog(response.message, response.check);
     });
   }
 
@@ -83,6 +78,7 @@ class _SignScreenState extends State<SignScreen> {
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context).size;
     return Scaffold(
+      drawer: SideDrawer(),
       body: Form(
         key: _formKey,
         child: ListView(
@@ -90,12 +86,12 @@ class _SignScreenState extends State<SignScreen> {
             Container(
               height: mq.height * 0.25,
               child: Stack(children: <Widget>[
-              ClipPath(
-                  clipper: WaveClipperTwo(flip : true),
-                  child: Container(
-                    color: Theme.of(context).primaryColorLight,
-                    height: mq.height * 0.25,
-                  )),
+                ClipPath(
+                    clipper: WaveClipperTwo(flip: true),
+                    child: Container(
+                      color: Theme.of(context).primaryColorLight,
+                      height: mq.height * 0.25,
+                    )),
                 ClipPath(
                   clipper: WaveClipperTwo(),
                   child: Container(
@@ -125,17 +121,19 @@ class _SignScreenState extends State<SignScreen> {
                   ),
                 ),
                 Positioned(
-                top: 50,
-                left: 140,
-               child : Text(
-                  "Get your account now",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                  top: 50,
+                  left: 140,
+                  child: Text(
+                    "Edit your account",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ), 
-               ),])),
+                ),
+              ]),
+            ),
             Padding(
               padding: const EdgeInsets.only(right: 20, left: 20),
               child: Column(
@@ -158,21 +156,6 @@ class _SignScreenState extends State<SignScreen> {
                     ),
                     TextFormField(
                       decoration: InputDecoration(
-                          labelText: "Phone",
-                          prefixIcon: Icon(Icons.phone_android)),
-                      keyboardType: TextInputType.phone,
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return "Please enter Phone numebr";
-                        }
-                      },
-                      controller: _phoneController,
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(
                           labelText: "Email",
                           hintText: "Enter valid Email",
                           prefixIcon: Icon(Icons.alternate_email)),
@@ -183,20 +166,6 @@ class _SignScreenState extends State<SignScreen> {
                         }
                       },
                       controller: _emailController,
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                          labelText: "SSN", prefixIcon: Icon(Icons.credit_card)),
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value.isEmpty || value.length != 14) {
-                          return "Please enter valid SNN";
-                        }
-                      },
-                      controller: _ssnController,
                     ),
                     SizedBox(
                       height: 15,
@@ -259,7 +228,7 @@ class _SignScreenState extends State<SignScreen> {
               ),
               child: FlatButton(
                 child: Text(
-                  "Sign up",
+                  "Update",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -270,28 +239,9 @@ class _SignScreenState extends State<SignScreen> {
                 },
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "Back?",
-                  style: TextStyle(color: Colors.grey),
-                ),
-                FlatButton(
-                  child: Text(
-                    'Sign in',
-                    style:
-                        TextStyle(color: Theme.of(context).primaryColorLight),
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, LoginScreen.routeName);
-                  },
-                ),
-              ],
-            ),
           ],
         ),
       ),
-        );
+    );
   }
 }

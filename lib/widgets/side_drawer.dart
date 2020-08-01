@@ -124,29 +124,29 @@ class SideDrawer extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
-              height: 15,
-            ),
-            Divider(),
-            SizedBox(
-              height: 15,
-            ),
-            FlatButton(
-              onPressed: () {},
-              child: Row(
-                children: <Widget>[
-                  Icon(Icons.mode_edit,
-                      color: Theme.of(context).primaryColorLight, size: 30),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text("Edit account",
-                      style: TextStyle(
-                        fontSize: 18,
-                      )),
-                ],
-              ),
-            ),
+            // SizedBox(
+            //   height: 15,
+            // ),
+            //Divider(),
+            // SizedBox(
+            //   height: 15,
+            // ),
+            // FlatButton(
+            //   onPressed: () {},
+            //   child: Row(
+            //     children: <Widget>[
+            //       Icon(Icons.mode_edit,
+            //           color: Theme.of(context).primaryColorLight, size: 30),
+            //       SizedBox(
+            //         width: 10,
+            //       ),
+            //       Text("Edit account",
+            //           style: TextStyle(
+            //             fontSize: 18,
+            //           )),
+            //     ],
+            //   ),
+            // ),
             SizedBox(
               height: 15,
             ),
@@ -177,7 +177,7 @@ class SideDrawer extends StatelessWidget {
             ),
             FlatButton(
               onPressed: () {
-                Provider.of<UserServices>(context, listen: false)
+                Provider.of<UserServices>(context)
                     .removeTokenInSharedPref();
                 Navigator.pushNamed(context, LoginScreen.routeName);
               },

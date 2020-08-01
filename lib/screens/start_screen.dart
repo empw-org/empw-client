@@ -10,7 +10,7 @@ class StartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: FutureBuilder(
-          future: Provider.of<UserServices>(context, listen: false).isAuth(),
+          future: Provider.of<UserServices>(context).isAuth(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data == null) {
               return Container(
