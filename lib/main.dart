@@ -1,3 +1,4 @@
+import 'package:empw/screens/donnation_screen.dart';
 import 'package:empw/screens/edit_profile_screen.dart';
 import 'package:empw/screens/make_order_screen.dart';
 import 'package:empw/screens/orders_history_screen.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
               TrackShippingScreen.routeName: (ctx) => TrackShippingScreen(),
               VerificationScreen.routeName: (ctx) => VerificationScreen(),
               EditProfileScreen.routeName: (ctx) =>  EditProfileScreen(),
+              DonnationScreen.routeName: (ctx) =>   DonnationScreen(),
             },
             home: StartScreen(),
           ),

@@ -1,3 +1,4 @@
+import 'package:empw/screens/donnation_screen.dart';
 import 'package:empw/screens/login_screen.dart';
 import 'package:empw/screens/make_order_screen.dart';
 import 'package:empw/screens/orders_history_screen.dart';
@@ -124,29 +125,27 @@ class SideDrawer extends StatelessWidget {
                 ],
               ),
             ),
-            // SizedBox(
-            //   height: 15,
-            // ),
-            //Divider(),
-            // SizedBox(
-            //   height: 15,
-            // ),
-            // FlatButton(
-            //   onPressed: () {},
-            //   child: Row(
-            //     children: <Widget>[
-            //       Icon(Icons.mode_edit,
-            //           color: Theme.of(context).primaryColorLight, size: 30),
-            //       SizedBox(
-            //         width: 10,
-            //       ),
-            //       Text("Edit account",
-            //           style: TextStyle(
-            //             fontSize: 18,
-            //           )),
-            //     ],
-            //   ),
-            // ),
+            SizedBox(
+              height: 15,
+            ),
+            FlatButton(
+              onPressed: () {
+                Navigator.pushNamed(context, DonnationScreen.routeName);
+              },
+              child: Row(
+                children: <Widget>[
+                  Icon(Icons.monetization_on,
+                      color: Theme.of(context).primaryColorLight, size: 30),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text("Donnate",
+                      style: TextStyle(
+                        fontSize: 18,
+                      )),
+                ],
+              ),
+            ),
             SizedBox(
               height: 15,
             ),
@@ -177,8 +176,7 @@ class SideDrawer extends StatelessWidget {
             ),
             FlatButton(
               onPressed: () {
-                Provider.of<UserServices>(context)
-                    .removeTokenInSharedPref();
+                Provider.of<UserServices>(context).removeTokenInSharedPref();
                 Navigator.pushNamed(context, LoginScreen.routeName);
               },
               child: Row(

@@ -34,13 +34,7 @@ class PaymentContainer extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  Text(
-                    "\$78",
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColorDark,
-                      fontSize: 28,
-                    ),
-                  ),
+                  
                   Icon(
                     Icons.help_outline,
                     color: Colors.white,

@@ -57,6 +57,7 @@ flutter:
    - assets/images/water-tank.png
    - assets/images/user.jpg
    - assets/images/tank.png
+   - assets/images/donation.png
    
 
   # An image asset can refer to one or more resolution-specific "variants", see
