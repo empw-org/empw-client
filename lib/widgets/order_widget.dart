@@ -1,15 +1,25 @@
+import 'package:empw/modules/order_summry_data.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'dart:math';
-import 'package:intl/intl.dart';
 
-class OrderWidget extends StatelessWidget {
+class OrderWidget extends StatefulWidget {
+  OrderSummeryData orderSummeryData;
+  OrderWidget({this.orderSummeryData});
+
+  @override
+  _OrderWidgetState createState() => _OrderWidgetState();
+}
+
+class _OrderWidgetState extends State<OrderWidget> {
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context).size;
     return Card(
-      elevation: 5,
-      margin: EdgeInsets.only(top: 15, left: 15, right: 15),
+      elevation: 25,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(60), bottomLeft: Radius.circular(60))),
+      margin: EdgeInsets.all(15),
       child: Container(
         padding: EdgeInsets.all(20),
         height: mq.height * 0.5,
@@ -22,8 +32,16 @@ class OrderWidget extends StatelessWidget {
                   fontSize: 18,
                   color: Theme.of(context).primaryColorLight),
             ),
+            Text(
+              widget.orderSummeryData.state,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Theme.of(context).primaryColorLight),
+            ),
+            Divider(),
             SizedBox(
-              height: 20,
+              height: 10,
             ),
             Expanded(
               child: Column(
@@ -33,27 +51,10 @@ class OrderWidget extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Icon(
-                        Icons.date_range,
-                        color: Colors.black,
-                      ),
-                      Text(
-                        "Arrival date:",
-                        style: TextStyle(fontSize: 15, color: Colors.black),
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        DateFormat.yMMMMd().format(DateTime.now()).toString(),
-                        style: TextStyle(fontSize: 15, color: Colors.black),
-                      )
-                    ],
-                  ),
-                  Divider(),
-                  Row(
-                    children: <Widget>[
-                      Icon(
                         Icons.place,
                         color: Colors.black,
                       ),
+                      SizedBox(width: 5),
                       Text(
                         "Location:",
                         style: TextStyle(fontSize: 15, color: Colors.black),
@@ -72,6 +73,7 @@ class OrderWidget extends StatelessWidget {
                         Icons.payment,
                         color: Colors.black,
                       ),
+                      SizedBox(width: 5),
                       Text(
                         "Payment method:",
                         style: TextStyle(fontSize: 15, color: Colors.black),
@@ -87,9 +89,13 @@ class OrderWidget extends StatelessWidget {
               ),
             ),
             Container(
-              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColorLight,
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(60),
+                      bottomLeft: Radius.circular(60))),
+              padding: EdgeInsets.all(20),
               height: mq.height * 0.1,
-              color: Theme.of(context).primaryColorLight,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -104,12 +110,12 @@ class OrderWidget extends StatelessWidget {
                         width: 8,
                       ),
                       Text(
-                        "300 L",
+                        widget.orderSummeryData.amount,
                         style: TextStyle(fontSize: 20, color: Colors.black),
                       )
                     ],
                   ),
-                   Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Text(
@@ -120,7 +126,7 @@ class OrderWidget extends StatelessWidget {
                         width: 8,
                       ),
                       Text(
-                        "\$350",
+                        widget.orderSummeryData.total,
                         style: TextStyle(fontSize: 20, color: Colors.black),
                       )
                     ],

@@ -27,7 +27,8 @@ class OrderServices with ChangeNotifier {
       return ApiResponse<OrderSummeryData>(
           check: true,
           data: OrderSummeryData.fromJson(
-              returnedOrder: jsonData, total: totalMoney(jsonData["amount"].toString())));
+              returnedOrder: jsonData,
+              total: totalMoney(jsonData["amount"].toString())));
     } else if (response.statusCode == 400) {
       return ApiResponse<OrderSummeryData>(
           check: false,
@@ -36,10 +37,27 @@ class OrderServices with ChangeNotifier {
               "You already have your 5 Pending requests, please wait to receive them or delete one.");
     }
     return ApiResponse<OrderSummeryData>(
-      check: false,
-      data: null,
-      message: "Something went wrong"
+        check: false, data: null, message: "Something went wrong");
+  }
+
+  Future getAllOrders() async {
+    String token = await _getTokenFromSharedPref();
+    final response = await http.get(
+     _api,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
     );
+    print("status : ${response.statusCode}");
+    if (response.statusCode == 200) {
+      print("here i am");
+      final jsonData = json.decode(response.body);
+      return jsonData;
+    }else{
+      print("fucked up");
+      return null;
+    }
   }
 
   String totalMoney(String amount) {

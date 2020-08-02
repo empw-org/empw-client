@@ -1,13 +1,9 @@
 import 'package:empw/modules/edit_profile_data.dart';
-import 'package:empw/modules/user_signup_data.dart';
-import 'package:empw/modules/user_verification_data.dart';
-import 'package:empw/screens/verification_screen.dart';
 import 'package:empw/services/user_services.dart';
 import 'package:empw/widgets/side_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:provider/provider.dart';
-import 'login_screen.dart';
 
 class EditProfileScreen extends StatefulWidget {
   static const routeName = '/edit_profile_screen';
