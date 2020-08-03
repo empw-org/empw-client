@@ -1,5 +1,5 @@
-import 'package:empw/widgets/payment.dart';
-import 'package:empw/widgets/side_drawer.dart';
+import 'package:empw/view/widgets/payment.dart';
+import 'package:empw/view/widgets/side_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 

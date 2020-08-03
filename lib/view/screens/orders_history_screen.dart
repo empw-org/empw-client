@@ -1,8 +1,8 @@
-import 'package:empw/modules/order_summry_data.dart';
-import 'package:empw/services/order_service.dart';
-import 'package:empw/widgets/side_drawer.dart';
+import 'package:empw/models/order/order_summry_data.dart';
+import 'package:empw/controllers/order_service.dart';
+import 'package:empw/view/widgets/side_drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:empw/widgets/order_widget.dart';
+import 'package:empw/view/widgets/order_widget.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';

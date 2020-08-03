@@ -1,5 +1,5 @@
-import 'package:empw/screens/profile_screen.dart';
-import 'package:empw/services/user_services.dart';
+import 'package:empw/view/screens/profile_screen.dart';
+import 'package:empw/controllers/user_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';

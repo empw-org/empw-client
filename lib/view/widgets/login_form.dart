@@ -1,7 +1,7 @@
-import 'package:empw/modules/user_login_data.dart';
-import 'package:empw/screens/profile_screen.dart';
-import 'package:empw/screens/sign_screen.dart';
-import 'package:empw/services/user_services.dart';
+import 'package:empw/models/user/user_login_data.dart';
+import 'package:empw/view/screens/profile_screen.dart';
+import 'package:empw/view/screens/sign_screen.dart';
+import 'package:empw/controllers/user_services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -1,11 +1,11 @@
-import 'package:empw/screens/donnation_screen.dart';
-import 'package:empw/screens/login_screen.dart';
-import 'package:empw/screens/make_order_screen.dart';
-import 'package:empw/screens/orders_history_screen.dart';
-import 'package:empw/screens/profile_screen.dart';
-import 'package:empw/services/user_services.dart';
+import 'package:empw/view/screens/donnation_screen.dart';
+import 'package:empw/view/screens/login_screen.dart';
+import 'package:empw/view/screens/make_order_screen.dart';
+import 'package:empw/view/screens/orders_history_screen.dart';
+import 'package:empw/view/screens/profile_screen.dart';
+import 'package:empw/controllers/user_services.dart';
 import 'package:flutter/material.dart';
-import 'package:empw/screens/track_shipping_screen.dart';
+import 'package:empw/view/screens/track_shipping_screen.dart';
 import 'package:provider/provider.dart';
 
 class SideDrawer extends StatelessWidget {

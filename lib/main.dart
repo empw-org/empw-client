@@ -1,18 +1,18 @@
-import 'package:empw/screens/donnation_screen.dart';
-import 'package:empw/screens/edit_profile_screen.dart';
-import 'package:empw/screens/make_order_screen.dart';
-import 'package:empw/screens/orders_history_screen.dart';
-import 'package:empw/screens/profile_screen.dart';
-import 'package:empw/screens/login_screen.dart';
-import 'package:empw/screens/sign_screen.dart';
-import 'package:empw/screens/start_screen.dart';
-import 'package:empw/screens/verification_screen.dart';
-import 'package:empw/services/order_service.dart';
-import 'package:empw/services/user_services.dart';
+import 'package:empw/view/screens/donnation_screen.dart';
+import 'package:empw/view/screens/edit_profile_screen.dart';
+import 'package:empw/view/screens/make_order_screen.dart';
+import 'package:empw/view/screens/orders_history_screen.dart';
+import 'package:empw/view/screens/profile_screen.dart';
+import 'package:empw/view/screens/login_screen.dart';
+import 'package:empw/view/screens/sign_screen.dart';
+import 'package:empw/view/screens/start_screen.dart';
+import 'package:empw/view/screens/verification_screen.dart';
+import 'package:empw/view/screens/track_shipping_screen.dart';
+import 'package:empw/controllers/order_service.dart';
+import 'package:empw/controllers/user_services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 //import 'package:device_preview/device_preview.dart';
-import 'package:empw/screens/track_shipping_screen.dart';
 
 void main() => runApp(
       // DevicePreview(

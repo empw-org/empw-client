@@ -1,9 +1,9 @@
-import 'package:empw/modules/make_order_data.dart';
-import 'package:empw/screens/track_shipping_screen.dart';
-import 'package:empw/services/location_services.dart';
-import 'package:empw/services/order_service.dart';
-import 'package:empw/widgets/payment.dart';
-import 'package:empw/widgets/side_drawer.dart';
+import 'package:empw/models/order/make_order_data.dart';
+import 'package:empw/view/screens/track_shipping_screen.dart';
+import 'package:empw/controllers/location_services.dart';
+import 'package:empw/controllers/order_service.dart';
+import 'package:empw/view/widgets/payment.dart';
+import 'package:empw/view/widgets/side_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:provider/provider.dart';

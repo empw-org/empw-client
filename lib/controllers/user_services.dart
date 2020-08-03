@@ -1,9 +1,9 @@
-import 'package:empw/modules/User_Profile_data.dart';
-import 'package:empw/modules/api_response.dart';
-import 'package:empw/modules/edit_profile_data.dart';
-import 'package:empw/modules/user_login_data.dart';
-import 'package:empw/modules/user_signup_data.dart';
-import 'package:empw/modules/user_verification_data.dart';
+import 'package:empw/models/api_response.dart';
+import 'package:empw/models/user/User_Profile_data.dart';
+import 'package:empw/models/user/edit_profile_data.dart';
+import 'package:empw/models/user/user_login_data.dart';
+import 'package:empw/models/user/user_signup_data.dart';
+import 'package:empw/models/user/user_verification_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

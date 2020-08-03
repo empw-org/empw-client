@@ -1,72 +1,110 @@
-import 'package:empw/modules/edit_profile_data.dart';
-import 'package:empw/services/user_services.dart';
-import 'package:empw/widgets/side_drawer.dart';
+import 'package:empw/models/user/user_signup_data.dart';
+import 'package:empw/models/user/user_verification_data.dart';
+import 'package:empw/view/screens/verification_screen.dart';
+import 'package:empw/controllers/user_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:provider/provider.dart';
+import 'login_screen.dart';
 
-class EditProfileScreen extends StatefulWidget {
-  static const routeName = '/edit_profile_screen';
+class SignScreen extends StatefulWidget {
+  static const routeName = '/sign_screen';
 
   @override
-  _EditProfileScreenState createState() => _EditProfileScreenState();
+  _SignScreenState createState() => _SignScreenState();
 }
 
-class _EditProfileScreenState extends State<EditProfileScreen> {
+class _SignScreenState extends State<SignScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   TextEditingController _nameController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
+  TextEditingController _ssnController = TextEditingController();
   TextEditingController _salController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
-
-
-  void _showDialog(String message, bool check) {
+  void _showDialog(String message, bool check, UserVerificationData userVerificationData) {
     showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-              content: Text(
-                message,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Theme.of(context).primaryColorLight),
+          elevation: 40,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(60), bottomLeft: Radius.circular(60))),
+              content: Container(
+                height: 120,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text("Hold On!",
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorDark,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold)),
+                    Text(
+                      message,
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColorLight,
+                          fontSize: 18),
+                    ),
+                  ],
+                ),
               ),
               actions: <Widget>[
-                FlatButton(
-                  child: Text(
-                    'Okay',
-                    style:
-                        TextStyle(color: Theme.of(context).primaryColorLight),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Theme.of(context).primaryColorDark,
+                    gradient: new LinearGradient(colors: [
+                      Theme.of(context).primaryColorLight,
+                      Theme.of(context).primaryColor
+                    ], begin: Alignment.centerLeft, end: Alignment.centerRight),
                   ),
+                  child: FlatButton(
+                    child: Text(
+                      "Ok",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                    ),
                   onPressed: () {
                     if (check == true) {
+                      Navigator.of(ctx)
+                          .popAndPushNamed(VerificationScreen.routeName,
+                              arguments: VerificationScreen(
+                                email: userVerificationData.email,
+                                password: userVerificationData.password,
+                              ));
                     } else {
                       Navigator.of(ctx).pop();
                     }
                   },
-                )
+                ))
               ],
             ));
   }
 
   void _sumbit() async {
-    EditProfileData updatedUser = new EditProfileData(
-      email: _emailController.text,
-      avgSal: _salController.text,
-      password: _passwordController.text,
-      name: _nameController.text,
-    );
+    UserSignUpData newUser = new UserSignUpData(
+        ssn: _ssnController.text,
+        email: _emailController.text,
+        avgSal: _salController.text,
+        password: _passwordController.text,
+        name: _nameController.text,
+        phone: _phoneController.text);
 
-    print(updatedUser);
+    print(newUser);
     print("start of sumbit");
     if (!_formKey.currentState.validate()) {
       print("not validated");
       return;
     }
-    print(updatedUser);
+    print(newUser);
     Provider.of<UserServices>(context, listen: false)
-        .editProfile(updatedUser)
+        .singup(newUser)
         .then((response) {
-      _showDialog(response.message, response.check);
+      _showDialog(response.message, response.check, response.data);
     });
   }
 
@@ -74,7 +112,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context).size;
     return Scaffold(
-      drawer: SideDrawer(),
       body: Form(
         key: _formKey,
         child: ListView(
@@ -82,12 +119,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             Container(
               height: mq.height * 0.25,
               child: Stack(children: <Widget>[
-                ClipPath(
-                    clipper: WaveClipperTwo(flip: true),
-                    child: Container(
-                      color: Theme.of(context).primaryColorLight,
-                      height: mq.height * 0.25,
-                    )),
+              ClipPath(
+                  clipper: WaveClipperTwo(flip : true),
+                  child: Container(
+                    color: Theme.of(context).primaryColorLight,
+                    height: mq.height * 0.25,
+                  )),
                 ClipPath(
                   clipper: WaveClipperTwo(),
                   child: Container(
@@ -117,19 +154,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                 ),
                 Positioned(
-                  top: 50,
-                  left: 140,
-                  child: Text(
-                    "Edit your account",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                top: 50,
+                left: 140,
+               child : Text(
+                  "Get your account now",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
-                ),
-              ]),
-            ),
+                ), 
+               ),])),
             Padding(
               padding: const EdgeInsets.only(right: 20, left: 20),
               child: Column(
@@ -152,6 +187,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                     TextFormField(
                       decoration: InputDecoration(
+                          labelText: "Phone",
+                          prefixIcon: Icon(Icons.phone_android)),
+                      keyboardType: TextInputType.phone,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return "Please enter Phone numebr";
+                        }
+                      },
+                      controller: _phoneController,
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(
                           labelText: "Email",
                           hintText: "Enter valid Email",
                           prefixIcon: Icon(Icons.alternate_email)),
@@ -162,6 +212,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         }
                       },
                       controller: _emailController,
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(
+                          labelText: "SSN", prefixIcon: Icon(Icons.credit_card)),
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value.isEmpty || value.length != 14) {
+                          return "Please enter valid SNN";
+                        }
+                      },
+                      controller: _ssnController,
                     ),
                     SizedBox(
                       height: 15,
@@ -224,7 +288,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               child: FlatButton(
                 child: Text(
-                  "Update",
+                  "Sign up",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -235,9 +299,28 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 },
               ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "Back?",
+                  style: TextStyle(color: Colors.grey),
+                ),
+                FlatButton(
+                  child: Text(
+                    'Sign in',
+                    style:
+                        TextStyle(color: Theme.of(context).primaryColorLight),
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, LoginScreen.routeName);
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ),
-    );
+        );
   }
 }

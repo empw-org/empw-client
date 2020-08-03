@@ -1,5 +1,5 @@
-import 'package:empw/widgets/side_drawer.dart';
-import 'package:empw/widgets/track_widget.dart';
+import 'package:empw/view/widgets/side_drawer.dart';
+import 'package:empw/view/widgets/track_widget.dart';
 import 'package:flutter/material.dart';
 
 class TrackShippingScreen extends StatelessWidget {

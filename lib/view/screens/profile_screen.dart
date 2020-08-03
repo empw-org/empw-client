@@ -1,6 +1,6 @@
-import 'package:empw/screens/edit_profile_screen.dart';
-import 'package:empw/services/user_services.dart';
-import 'package:empw/widgets/side_drawer.dart';
+import 'package:empw/view/screens/edit_profile_screen.dart';
+import 'package:empw/controllers/user_services.dart';
+import 'package:empw/view/widgets/side_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

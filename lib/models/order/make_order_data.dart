@@ -1,4 +1,4 @@
-import 'package:empw/services/location_services.dart';
+import 'package:empw/controllers/location_services.dart';
 
 class MakeOrderData{
   String amount;
