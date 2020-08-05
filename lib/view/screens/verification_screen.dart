@@ -71,6 +71,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
     return Scaffold(
       body: ListView(
+                padding: EdgeInsets.all(0),
+
         children: <Widget>[
           Container(
             child: Stack(children: <Widget>[

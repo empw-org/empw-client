@@ -78,6 +78,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       body: Form(
         key: _formKey,
         child: ListView(
+                  padding: EdgeInsets.all(0),
+
           children: <Widget>[
             Container(
               height: mq.height * 0.25,

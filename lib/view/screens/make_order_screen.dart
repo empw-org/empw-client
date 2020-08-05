@@ -250,7 +250,7 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
     await location.getCurrentAdress();
     await print(location.address);
     await setState(() {
-      _address = location.address;
+      _address = location.address == null ? "No readable adress, Long = ${location.longitude}, Lati = ${location.latitude}" : location.address;
     });
   }
 
@@ -261,6 +261,7 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
       resizeToAvoidBottomInset: true,
       drawer: SideDrawer(),
       body: ListView(
+        padding: EdgeInsets.all(0),
         children: <Widget>[
           Container(
               height: mq.height * 0.25,

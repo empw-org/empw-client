@@ -3,8 +3,15 @@ import 'package:empw/view/widgets/side_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 
-class DonnationScreen extends StatelessWidget {
+class DonnationScreen extends StatefulWidget {
   static const routeName = "/donnation_screen";
+
+  @override
+  _DonnationScreenState createState() => _DonnationScreenState();
+}
+
+class _DonnationScreenState extends State<DonnationScreen> {
+  int _cnt = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +20,9 @@ class DonnationScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         drawer: SideDrawer(),
-        body: ListView(children: <Widget>[
+        body: ListView(
+          padding: EdgeInsets.all(0),
+          children: <Widget>[
           Container(
             height: mq.height * 0.3,
             child: Stack(children: <Widget>[
@@ -38,19 +47,7 @@ class DonnationScreen extends StatelessWidget {
                       height: mq.height * 0.3,
                     )),
               ),
-              Card(
-                  color: Colors.transparent,
-                  elevation: 20,
-                  child: Container(
-                      height: mq.height * 0.2,
-                      width: mq.width,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColorLight,
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(180),
-                          bottomRight: Radius.circular(180),
-                        ),
-                      ))),
+              
               Positioned(
                 child: CircleAvatar(
                   radius: mq.width * 0.16,
@@ -76,59 +73,53 @@ class DonnationScreen extends StatelessWidget {
               ),
             ]),
           ),
+          Center(child: Text("Money amount", style: TextStyle(fontSize: 20),)),
+          SizedBox(height: 10),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColorLight,
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(20),
-                        bottomLeft: Radius.circular(20))),
-                child: Text(
-                  "30\$",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
+              IconButton(
+                  icon: Icon(
+                    Icons.arrow_left,
+                    size: 50,
+                  ),
+                  onPressed: () {
+                    if (_cnt < 110) {
+                      return;
+                    } else {
+                      setState(() {
+                        _cnt -= 10;
+                      });
+                    }
+                  }),
+              CircleAvatar(
+                radius: 40,
+                child: CircleAvatar(
+                  backgroundColor: Theme.of(context).primaryColorLight,
+                  radius: 35,
+                  child: Text(
+                    "$_cnt",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
                   ),
                 ),
               ),
-              Container(
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColorLight,
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(20),
-                        bottomLeft: Radius.circular(20))),
-                child: Text(
-                  "60\$",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
+              IconButton(
+                  icon: Icon(
+                    Icons.arrow_right,
+                    size: 50,
                   ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColorLight,
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(20),
-                        bottomLeft: Radius.circular(20))),
-                child: Text(
-                  "120\$",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 35,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              )
+                  onPressed: () {
+                    if (_cnt > 490) {
+                      return;
+                    } else {
+                      setState(() {
+                        _cnt += 10;
+                      });
+                    }
+                  }),
             ],
           ),
           PaymentContainer(),

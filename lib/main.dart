@@ -1,3 +1,4 @@
+import 'package:empw/view/screens/contact_us_screen.dart';
 import 'package:empw/view/screens/donnation_screen.dart';
 import 'package:empw/view/screens/edit_profile_screen.dart';
 import 'package:empw/view/screens/make_order_screen.dart';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
               accentColor: Color(0xffffffff),
               cardColor: Colors.white,
               dividerColor: Color(0xff81D4FA),
-              backgroundColor: Color(0xffEEEEEE),
+              backgroundColor: Colors.white,
               fontFamily: 'Lato',
             ),
             routes: {
@@ -58,6 +59,7 @@ class MyApp extends StatelessWidget {
               VerificationScreen.routeName: (ctx) => VerificationScreen(),
               EditProfileScreen.routeName: (ctx) =>  EditProfileScreen(),
               DonnationScreen.routeName: (ctx) =>   DonnationScreen(),
+             ContactUS.routeName: (ctx) =>   ContactUS(),
             },
             home: StartScreen(),
           ),

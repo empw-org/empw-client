@@ -1,3 +1,4 @@
+import 'package:empw/view/screens/contact_us_screen.dart';
 import 'package:empw/view/screens/donnation_screen.dart';
 import 'package:empw/view/screens/login_screen.dart';
 import 'package:empw/view/screens/make_order_screen.dart';
@@ -150,7 +151,9 @@ class SideDrawer extends StatelessWidget {
               height: 15,
             ),
             FlatButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, ContactUS.routeName);
+              },
               child: Row(
                 children: <Widget>[
                   Icon(Icons.email,

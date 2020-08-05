@@ -96,6 +96,8 @@ class _LoginFormState extends State<LoginForm> {
       child: Form(
         key: _formKey,
         child: ListView(
+                  padding: EdgeInsets.all(0),
+
           children: <Widget>[
             TextFormField(
               decoration: InputDecoration(
@@ -153,7 +155,6 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 onPressed: () {
                   _sumbit();
-                  //Navigator.pushNamed(context, ProfileScreen.routeName);
                 },
               ),
             ),

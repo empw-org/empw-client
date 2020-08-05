@@ -1,5 +1,6 @@
 import 'package:empw/view/screens/edit_profile_screen.dart';
 import 'package:empw/controllers/user_services.dart';
+import 'package:empw/view/widgets/chart.dart';
 import 'package:empw/view/widgets/side_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
@@ -18,8 +19,9 @@ class ProfileScreen extends StatelessWidget {
       drawer: SideDrawer(),
       body: Container(
         child: FutureBuilder(
-            future: Provider.of<UserServices>(context,)
-                .getUserProfile(),
+            future: Provider.of<UserServices>(
+              context,
+            ).getUserProfile(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Container(
@@ -37,11 +39,14 @@ class ProfileScreen extends StatelessWidget {
                         color: Colors.white,
                       )));
                 } else {
-                  return ListView(
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                        height: mq.height * 0.7,
+                        height: mq.height * 0.5,
                         child: Stack(children: <Widget>[
+                          
                           ClipRRect(
                             borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(140),
@@ -141,7 +146,8 @@ class ProfileScreen extends StatelessWidget {
                             alignment: Alignment.topRight,
                             child: FlatButton(
                               onPressed: () {
-                                Navigator.of(context).pushNamed( EditProfileScreen.routeName);
+                                Navigator.of(context)
+                                    .pushNamed(EditProfileScreen.routeName);
                               },
                               child: Icon(Icons.settings,
                                   color: Colors.white, size: 30),
@@ -149,6 +155,31 @@ class ProfileScreen extends StatelessWidget {
                           )
                         ]),
                       ),
+                      ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(140),
+                            topRight: Radius.circular(140),
+                          ),
+                          child: ClipPath(
+                            clipper: WaveClipperTwo(reverse: true, flip: true),
+                            child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(60),
+                                      topLeft: Radius.circular(60)),
+                                  color: Theme.of(context).primaryColorDark,
+                                  gradient: new LinearGradient(
+                                      colors: [
+                                        Theme.of(context).primaryColorLight,
+                                        Theme.of(context).primaryColor
+                                      ],
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight),
+                                ),
+                                height: MediaQuery.of(context).size.height / 2,
+                                width: MediaQuery.of(context).size.width,
+                                child: sample3(context)),
+                          )),
                     ],
                   );
                 }
