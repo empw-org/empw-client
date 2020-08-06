@@ -61,7 +61,7 @@ class OrderServices with ChangeNotifier {
   }
 
   String totalMoney(String amount) {
-    return ((int.parse(amount) * 30) + 200).toString();
+    return ((int.parse(amount) * 3.75) + 50).toString();
   }
 
   Future<String> _getTokenFromSharedPref() async {

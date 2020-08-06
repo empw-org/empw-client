@@ -159,8 +159,13 @@ class UserServices with ChangeNotifier {
       print(consumptionPoints[1].consumption);
       return ApiResponse<List<ConsumptionPoint>>(
           check: true, data: consumptionPoints);
+    }else if (response.statusCode == 400) {
+            final  jsonData = json.decode(response.body);
+
+      return ApiResponse<List<ConsumptionPoint>>(
+          check: false, message: jsonData["message"]);
     }
-    return ApiResponse<List<ConsumptionPoint>>(check: false, data: null);
+    return ApiResponse<List<ConsumptionPoint>>(check: false, data: null, message: null);
   }
 
   Future<void> removeTokenInSharedPref() async {

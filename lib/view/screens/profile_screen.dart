@@ -26,10 +26,36 @@ class ProfileScreen extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Container(
                     color: Theme.of(context).primaryColorLight,
-                    child: Center(
-                        child: SpinKitWanderingCubes(
-                      color: Colors.white,
-                    )));
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Center(
+                            child:  CircleAvatar(
+                      radius: mq.width / 4,
+                      backgroundColor: Theme.of(context).primaryColorLight,
+                      child: Image.asset(
+                        'assets/images/eye.png',
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                        Center(
+                            child: SpinKitWanderingCubes(
+                              size: 30,
+                          color: Colors.white,
+                        )),
+                        Column(
+                          children: <Widget>[
+                            Text("from", style: TextStyle(color: Colors.white),),
+                            Text("E M P W", style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold)),
+                          ],
+                        )
+                      ],
+                    ));
               } else if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.data == null) {
                   return Container(

@@ -79,10 +79,10 @@ class OrdersHistoryScreen extends StatelessWidget {
                         (snapshot.connectionState == ConnectionState.done &&
                             snapshot.data == null)) {
                       return Container(
-                          color: Theme.of(context).primaryColorLight,
+                        color: Colors.transparent,
                           child: Center(
                               child: SpinKitWanderingCubes(
-                            color: Colors.white,
+                            color: Theme.of(context).primaryColorLight,
                           )));
                     } else if (snapshot.hasData) {
                       return ListView.builder(
@@ -105,10 +105,10 @@ class OrdersHistoryScreen extends StatelessWidget {
                       );
                     }
                     return Container(
-                        color: Theme.of(context).primaryColorLight,
+                        color: Colors.transparent,
                         child: Center(
                             child: SpinKitWanderingCubes(
-                          color: Colors.white,
+                          color: Theme.of(context).primaryColorLight,
                         )));
                   },
                   future: Provider.of<OrderServices>(

@@ -10,8 +10,8 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="empw"
-        android:icon="@mipmap/ic_launcher">
+        android:label="EMPW"
+        android:icon="@mipmap/empwicon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

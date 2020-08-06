@@ -1,4 +1,5 @@
 import 'package:empw/models/order/make_order_data.dart';
+import 'package:empw/view/screens/orders_history_screen.dart';
 import 'package:empw/view/screens/track_shipping_screen.dart';
 import 'package:empw/controllers/location_services.dart';
 import 'package:empw/controllers/order_service.dart';
@@ -237,7 +238,7 @@ class _MakeOrderScreenState extends State<MakeOrderScreen> {
         .makeOrder(makeOrderData)
         .then((response) {
       if (response.check == true) {
-        Navigator.of(context).pushNamed(TrackShippingScreen.routeName);
+        Navigator.of(context).pushNamed(OrdersHistoryScreen.routeName);
       } else {
         _showDialog(response.message);
       }
