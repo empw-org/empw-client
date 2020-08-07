@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
               OrdersHistoryScreen.routeName: (ctx) => OrdersHistoryScreen(),
               LoginScreen.routeName: (ctx) => LoginScreen(),
               SignScreen.routeName: (ctx) => SignScreen(),
-              TrackShippingScreen.routeName: (ctx) => TrackShippingScreen(),
+              // TrackShippingScreen.routeName: (ctx) => TrackShippingScreen(),
               VerificationScreen.routeName: (ctx) => VerificationScreen(),
               EditProfileScreen.routeName: (ctx) =>  EditProfileScreen(),
               DonnationScreen.routeName: (ctx) =>   DonnationScreen(),
