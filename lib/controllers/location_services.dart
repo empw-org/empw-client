@@ -24,7 +24,7 @@ class Location {
       List<Placemark> p =
           await Geolocator().placemarkFromCoordinates(latitude, longitude);
       Placemark place = p[0];
-      address = "${place.locality}, ${place.country}";
+      address = "${place.locality}Ismailia, ${place.country}";
     } catch (e) {
       print(e);
     }
