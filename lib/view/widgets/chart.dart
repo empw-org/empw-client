@@ -41,7 +41,7 @@ Widget sample3(BuildContext context) {
                     List<DataPoint<DateTime>> _items;
                     _items = snapshot.data.data
                         .map<DataPoint<DateTime>>((item) => DataPoint<DateTime>(
-                            value: item.consumption, xAxis: item.createdAt))
+                            value: double.parse(item.consumption.toStringAsExponential(2)), xAxis: item.createdAt))
                         .toList();
                     return BezierChart(
                       fromDate: fromDate,
@@ -88,7 +88,6 @@ Widget sample3(BuildContext context) {
                             ),
                           ),
                         ),
-                        
                         Text(
                           "Get your sensor now",
                           textAlign: TextAlign.center,
@@ -119,7 +118,7 @@ Widget sample3(BuildContext context) {
                       ],
                     ));
                   } else if (snapshot.data.data.length == 0) {
-                    return Container(child: Text("No records yet"));
+                    return Center(child: Container(child: Text("No records yet")));
                   }
                 }
               }

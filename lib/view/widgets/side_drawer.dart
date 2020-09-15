@@ -88,26 +88,7 @@ class SideDrawer extends StatelessWidget {
             ),
             SizedBox(
               height: 15,
-            ),
-            // FlatButton(
-            //   onPressed: () {
-            //     Navigator.pushNamed(context, TrackShippingScreen.routeName);
-            //   },
-            //   child: Row(children: <Widget>[
-            //     Icon(Icons.local_shipping,
-            //         color: Theme.of(context).primaryColorLight, size: 30),
-            //     SizedBox(
-            //       width: 10,
-            //     ),
-            //     Text("Track shipping",
-            //         style: TextStyle(
-            //           fontSize: 18,
-            //         )),
-            //   ]),
-            // ),
-            // SizedBox(
-            //   height: 15,
-            // ),
+            ),  
             FlatButton(
               onPressed: () {
                 Navigator.pushNamed(context, OrdersHistoryScreen.routeName);
